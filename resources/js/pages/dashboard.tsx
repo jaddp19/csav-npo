@@ -184,12 +184,12 @@ export default function SDGGrid({ sdgs = [] }: { sdgs: any[] }) {
 								Colegio de Sta. Ana de Victorias
 							</p>
 							<h2 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
-								{' '}
+								Community Extentions{' '}
 								<span className="relative inline-block text-primary">
-									Community Extentions
+									Program Monitoring
 									<span className="absolute -bottom-1 left-0 h-[3px] w-full rounded-full bg-secondary" />
 								</span>{' '}
-								Program Monitoring
+								
 							</h2>
 						</div>
 					</div>
@@ -202,7 +202,7 @@ export default function SDGGrid({ sdgs = [] }: { sdgs: any[] }) {
 								<span className="mr-1 inline-block rounded-md bg-secondary px-2 py-0.5 text-xs font-black text-secondary-foreground">
 									{sdgs.length}
 								</span>
-								Activities Configured
+								Courses Configured
 							</p>
 
 							{/* Add Compliant Goal Button */}

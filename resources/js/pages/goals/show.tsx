@@ -650,7 +650,7 @@ export default function ShowGoal({ goal, authUserRole, authUserId }: ShowProps) 
                                        hover:bg-primary hover:text-primary-foreground active:scale-95
                                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2">
                             <ArrowLeft className="h-4 w-4" />
-                            <span className="hidden sm:inline">Back to Goals</span>
+                            <span className="hidden sm:inline">Back to Activities</span>
                         </Link>
                     </div>
 

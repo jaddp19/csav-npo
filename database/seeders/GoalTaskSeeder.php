@@ -11,12 +11,8 @@ use Illuminate\Support\Str;
 
 class GoalTaskSeeder extends Seeder
 {
-	/**
-	 * Run the database seeds.
-	 */
 	public function run(): void
 	{
-		// Assuming you have at least one user to act as project manager
 		$projectManager = User::first();
 
 		if (!$projectManager) {
@@ -24,30 +20,28 @@ class GoalTaskSeeder extends Seeder
 			return;
 		}
 
-		// Get the first SDG available
-		$sdg = Sdg::first();
+		$programs = Sdg::all();
 
-		if (!$sdg) {
-			$this->command->error('No SDG found. Please seed SDGs first.');
+		if ($programs->isEmpty()) {
+			$this->command->error('No programs found. Please seed the SdgSeeder first.');
 			return;
 		}
 
-		$this->command->info("Using SDG: {$sdg->name} (ID: {$sdg->id})");
-
-		$goalsData = [
+		// Template goals — {PROGRAM} gets replaced per program
+		$goalsTemplate = [
 			[
 				'title' => 'Curriculum Standardization and Quality Control',
-				'description' => 'To ensure the BSOA curriculum is industry-relevant, updated, and compliant with national education standards.',
+				'description' => 'To ensure the {PROGRAM} curriculum is industry-relevant, updated, and compliant with national education standards.',
 				'type' => 'long term',
 				'tasks' => [
 					'Curriculum Mapping: Aligning course outcomes with program objectives and industry needs.',
-					'Syllabus Review: Annual auditing of all BSOA syllabi to ensure modern office technologies are included.',
+					'Syllabus Review: Annual auditing of all {PROGRAM} syllabi to ensure modern office technologies are included.',
 					'Stakeholder Consultation: Gathering feedback from alumni and partner industries.',
 				],
 			],
 			[
 				'title' => 'Faculty Competency and Development',
-				'description' => 'To guarantee that BSOA instructors possess the necessary academic qualifications and industry certifications.',
+				'description' => 'To guarantee that {PROGRAM} instructors possess the necessary academic qualifications and industry certifications.',
 				'type' => 'long term',
 				'tasks' => [
 					'Faculty Training Needs Analysis (TNA): Identifying gaps in faculty knowledge (e.g., new ERP software or virtual assistant tools).',
@@ -57,7 +51,7 @@ class GoalTaskSeeder extends Seeder
 			],
 			[
 				'title' => 'Enhancement of Laboratory and Learning Resources',
-				'description' => 'To provide students with a physical or virtual environment that simulates a professional office setting.',
+				'description' => 'To provide {PROGRAM} students with a physical or virtual environment that simulates a professional office setting.',
 				'type' => 'long term',
 				'tasks' => [
 					'Inventory Management: Maintaining a log of functioning computers, typewriters (if applicable), and office equipment.',
@@ -67,17 +61,17 @@ class GoalTaskSeeder extends Seeder
 			],
 			[
 				'title' => 'Internship and Placement Monitoring',
-				'description' => 'To manage the transition of students from the classroom to the professional workforce effectively.',
+				'description' => 'To manage the transition of {PROGRAM} students from the classroom to the professional workforce effectively.',
 				'type' => 'long term',
 				'tasks' => [
 					'MOA Management: Establishing and renewing Memorandums of Agreement with reputable host training agencies.',
-					'Internship Monitoring: Regular visits or check-ins with supervisors at the companies where BSOA students are interning.',
-					'Traceability of Graduates: Tracking employment rates of BSOA alumni.',
+					'Internship Monitoring: Regular visits or check-ins with supervisors at the companies where {PROGRAM} students are interning.',
+					'Traceability of Graduates: Tracking employment rates of {PROGRAM} alumni.',
 				],
 			],
 			[
 				'title' => 'Document Control and Records Management',
-				'description' => 'To demonstrate "Good Housekeeping" by maintaining a systematic filing system for all departmental records.',
+				'description' => 'To demonstrate "Good Housekeeping" by maintaining a systematic filing system for all {PROGRAM} departmental records.',
 				'type' => 'short term',
 				'tasks' => [
 					'Master List of Documents: Creating a registry for all internal forms and procedures.',
@@ -88,44 +82,49 @@ class GoalTaskSeeder extends Seeder
 
 		$now = now();
 
-		foreach ($goalsData as $goalData) {
-			// Create the goal (without sdg_id since it's in the pivot)
-			$goal = Goal::create([
-				'project_manager_id' => $projectManager->id,
-				'title' => $goalData['title'],
-				'slug' => Str::slug($goalData['title'] . '-' . Str::random(6)),
-				'description' => $goalData['description'],
-				'start_date' => $now->copy()->addDays(rand(1, 10)),
-				'end_date' => $now->copy()->addMonths(rand(6, 18)),
-				'status' => 'pending',
-				'type' => $goalData['type'],
-				'compliance_percentage' => 0,
-			]);
+		foreach ($programs as $program) {
+			$this->command->info("Seeding goals for program: {$program->name} (ID: {$program->id})");
 
-			// Attach the SDG using the pivot table
-			$goal->sdgs()->attach($sdg->id);
+			foreach ($goalsTemplate as $goalData) {
+				// Replace {PROGRAM} placeholder with the actual program name
+				$title = str_replace('{PROGRAM}', $program->name, $goalData['title']);
+				$description = str_replace('{PROGRAM}', $program->name, $goalData['description']);
 
-			$this->command->info("Created goal: {$goalData['title']}");
-
-			// Create tasks for the goal (tasks still have direct sdg_id foreign key)
-			foreach ($goalData['tasks'] as $taskTitle) {
-				Task::create([
-					'goal_id' => $goal->id,
-					'sdg_id' => $sdg->id,  // Tasks still have direct SDG foreign key
-					'title' => $taskTitle,
-					'slug' => Str::slug($taskTitle . '-' . Str::random(6)),
-					'description' => null,
+				$goal = Goal::create([
+					'sdg_id' => $program->id,
+					'project_manager_id' => $projectManager->id,
+					'title' => $title,
+					'slug' => Str::slug($title . '-' . $program->slug . '-' . Str::random(6)),
+					'description' => $description,
+					'start_date' => $now->copy()->addDays(rand(1, 10)),
+					'end_date' => $now->copy()->addMonths(rand(6, 18)),
 					'status' => 'pending',
-					'remarks' => null,
-					'deadline' => $now->copy()->addMonths(rand(1, 6)),
+					'type' => $goalData['type'],
+					'compliance_percentage' => 0,
 				]);
-			}
 
-			$this->command->info("  - Created " . count($goalData['tasks']) . " tasks");
+				// Attach to pivot too (in case both FKs and pivot are used)
+				$goal->sdgs()->attach($program->id);
+
+				// Create tasks
+				foreach ($goalData['tasks'] as $taskTitle) {
+					$taskTitle = str_replace('{PROGRAM}', $program->name, $taskTitle);
+
+					Task::create([
+						'goal_id' => $goal->id,
+						'sdg_id' => $program->id,
+						'title' => $taskTitle,
+						'slug' => Str::slug($taskTitle . '-' . $program->slug . '-' . Str::random(6)),
+						'description' => null,
+						'status' => 'pending',
+						'remarks' => null,
+						'deadline' => $now->copy()->addMonths(rand(1, 6)),
+					]);
+				}
+			}
 		}
 
 		$this->command->newLine();
-		$this->command->info('✓ Goals and tasks seeded successfully!');
-		$this->command->info("✓ All goals attached to SDG ID: {$sdg->id}");
+		$this->command->info('✓ Goals and tasks seeded for ALL programs successfully!');
 	}
 }

@@ -318,8 +318,8 @@ export default function Index({
             <div className="min-h-screen py-8 md:py-10">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
                     <PortalMorph
-                        eyebrow="CSAV · SDG Goals"
-                        text="Goal Dashboard"
+                        eyebrow="CSAV · SDG Activities"
+                        text="Activity Dashboard"
                         textDisplayDuration={0.75}
                         popInDuration={0.55}
                         morphDuration={0.5}
@@ -337,7 +337,7 @@ export default function Index({
                                     {selectedSdg?.name ?? 'Overview'}
                                 </p>
                                 <h1 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
-                                    Goals{' '}
+                                    Program Activity{' '}
                                     <span className="relative inline-block text-primary">
                                         Dashboard
                                         <span className="absolute -bottom-1 left-0 h-[3px] w-full rounded-full bg-secondary" />
@@ -355,14 +355,14 @@ export default function Index({
                                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                             >
                                 <Plus className="h-4 w-4" />
-                                Create Goal
+                                Create Activity
                             </Link>
                         </PermissionGuard>
                     </div>
 
                     {/* ── Stat cards: 2 col mobile → 4 col desktop ── */}
                     <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-                        <StatCard icon={Flag}        label="Total Goals"      value={totalGoals}         color="primary"   index={0} />
+                        <StatCard icon={Flag}        label="Total Activities"      value={totalGoals}         color="primary"   index={0} />
                         <StatCard icon={Users}        label="Assigned to You"  value={assignedGoalsCount} color="card"      index={1} />
                         <StatCard icon={CheckCircle2} label="Compliant"        value={compliantGoals}     color="secondary" index={2} />
                         <StatCard icon={XCircle}      label="Non-Compliant"    value={nonCompliantGoals}  color="accent"    index={3} />
@@ -457,7 +457,7 @@ export default function Index({
                                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10">
                                     <Clock className="h-4 w-4 text-primary" />
                                 </div>
-                                <h2 className="text-sm font-bold text-foreground">Goal Types</h2>
+                                <h2 className="text-sm font-bold text-foreground">Activity Types</h2>
                             </div>
 
                             <div className="space-y-3">
@@ -526,7 +526,7 @@ export default function Index({
                     <div className="section-in" style={{ animationDelay: '280ms' }}>
                         <div className="mb-4 flex items-center justify-between">
                             <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                                {safeGoals.length} goal{safeGoals.length !== 1 ? 's' : ''} in {selectedSdg?.name}
+                                {safeGoals.length} {safeGoals.length === 1 ? 'Activity' : 'Activities'} in {selectedSdg?.name}
                             </p>
                         </div>
                         <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
@@ -540,7 +540,7 @@ export default function Index({
                                     onView={handleViewClick}
                                     onEdit={handleEditClick}
                                     isModal={true}
-                                    title="Goals"
+                                    title="Activities"
                                     toolbar={
                                         <GoalFilterBar 
                                             filters={{
@@ -553,7 +553,7 @@ export default function Index({
                                             searchTerm={data.search}
                                             onSearchChange={handleSearchChange}
                                             onClearAll={hasActiveFilters ? handleClearAll : undefined}
-                                            searchPlaceholder='Search by goal name or description...'
+                                            searchPlaceholder='Search by activity name or description...'
                                         />
                                     }
                                     filterEmptyState={
@@ -566,7 +566,7 @@ export default function Index({
                                                     No results found
                                                 </h3>
                                                 <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 max-w-xs">
-                                                    No goals matching "{data.search}".
+                                                    No activities matching "{data.search}".
                                                 </p>
                                                 <Button variant="outline" size="sm" onClick={handleClearAll}>
                                                     Clear search
@@ -583,7 +583,7 @@ export default function Index({
                                     totalCount={totalCount}
                                     filteredCount={filteredCount}
                                     search={data.search}
-                                    resourceName='goals'
+                                    resourceName='activities'
                                 />
                             </div>
 
@@ -594,10 +594,10 @@ export default function Index({
                                     setItemToDelete(null);
                                 }}
                                 onConfirm={confirmDelete}
-                                title='Delete Goal Item'
+                                title='Delete Activity Item'
                                 itemName={itemToDelete?.title}
                                 isLoading={isDeleting}
-                                confirmText='Delete Goal'
+                                confirmText='Delete Activity'
                             />
                         </div>
                     </div>

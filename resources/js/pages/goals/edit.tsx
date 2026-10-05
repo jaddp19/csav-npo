@@ -354,14 +354,14 @@ export default function EditGoal({ sdg, goal, allSdgs, associatedSdgIds, assigne
                                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                         >
                             <ArrowLeft className="h-4 w-4" />
-                            <span className="hidden sm:inline">Back to Goals</span>
+                            <span className="hidden sm:inline">Back to Activities</span>
                         </Link>
                     </div>
 
                     <form onSubmit={submit} className="space-y-5">
 
-                        {/* 1. Goal Information */}
-                        <FormSection icon={Flag} title="Goal Information" index={0}>
+                        {/* 1. Activity Information */}
+                        <FormSection icon={Flag} title="Activity Information" index={0}>
                             <div className="space-y-1.5">
                                 <Label htmlFor="title" className="text-sm font-semibold">
                                     <span className="text-accent">* </span>Title
@@ -392,16 +392,16 @@ export default function EditGoal({ sdg, goal, allSdgs, associatedSdgIds, assigne
 
                             <div className="space-y-1.5">
                                 <Label className="text-sm font-semibold">
-                                    <span className="text-accent">* </span>Goal Type
+                                    <span className="text-accent">* </span>Activity Type
                                 </Label>
                                 <Select value={data.type} onValueChange={(v) => setData('type', v)} disabled={processing}>
                                     <SelectTrigger className="h-11 rounded-xl border-2 transition-all focus:border-primary">
-                                        <SelectValue placeholder="Select goal type" />
+                                        <SelectValue placeholder="Select activity type" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
-                                            <SelectItem value="long">Long-Term Goal</SelectItem>
-                                            <SelectItem value="short">Short-Term Goal</SelectItem>
+                                            <SelectItem value="long">Long-Term Activity</SelectItem>
+                                            <SelectItem value="short">Short-Term Activity</SelectItem>
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
@@ -530,7 +530,7 @@ export default function EditGoal({ sdg, goal, allSdgs, associatedSdgIds, assigne
                                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                             >
                                 {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                                {processing ? 'Updating…' : 'Update Goal'}
+                                {processing ? 'Updating…' : 'Update Activity'}
                             </button>
                         </div>
                     </form>

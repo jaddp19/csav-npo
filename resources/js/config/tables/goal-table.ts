@@ -1,6 +1,6 @@
 export const GoalsTableConfig = {
     columns: [
-        { label: 'Goal Name', key: 'title', className: 'border p-4' },
+        { label: 'Activity Name', key: 'title', className: 'border p-4' },
         { label: 'Status', key: 'status', className: 'capitalize border p-4' },
         { label: 'Progress', key: 'compliance_percentage', className: 'w-90 p-4' },
         { label: 'Actions', key: 'actions', isAction: true, className: 'border p-4' },

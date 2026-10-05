@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Sdg;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Faker\Factory as Faker;
 
 class UserSeeder extends Seeder
@@ -18,8 +18,15 @@ class UserSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        // Loop through all SDG IDs (assuming 1–17)
-        foreach (range(1, 17) as $sdgId) {
+        // Pull actual program IDs from the database instead of hardcoding
+        $sdgIds = Sdg::pluck('id');
+
+        if ($sdgIds->isEmpty()) {
+            $this->command->error('No programs found. Please seed SdgSeeder first.');
+            return;
+        }
+
+        foreach ($sdgIds as $sdgId) {
             // One Project Manager
             $pmName = $faker->name;
             $projectManager = User::create([

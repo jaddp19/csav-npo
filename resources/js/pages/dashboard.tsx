@@ -84,7 +84,7 @@ function SDGCard({ sdg, index, featured = false, onDelete }: {
 
 			<div className="flex flex-1 flex-col p-5">
 				<p className="mb-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-accent">
-					Compliance {sdg.id}
+					Course {sdg.id}
 				</p>
 
 				<h3 className="mb-2 line-clamp-2 text-base font-bold leading-snug text-card-foreground">
@@ -184,12 +184,12 @@ export default function SDGGrid({ sdgs = [] }: { sdgs: any[] }) {
 								Colegio de Sta. Ana de Victorias
 							</p>
 							<h2 className="text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
-								Compliance{' '}
+								{' '}
 								<span className="relative inline-block text-primary">
-									Monitoring
+									Community Extentions
 									<span className="absolute -bottom-1 left-0 h-[3px] w-full rounded-full bg-secondary" />
 								</span>{' '}
-								Tool
+								Program Monitoring
 							</h2>
 						</div>
 					</div>
@@ -202,7 +202,7 @@ export default function SDGGrid({ sdgs = [] }: { sdgs: any[] }) {
 								<span className="mr-1 inline-block rounded-md bg-secondary px-2 py-0.5 text-xs font-black text-secondary-foreground">
 									{sdgs.length}
 								</span>
-								goals configured
+								Activities Configured
 							</p>
 
 							{/* Add Compliant Goal Button */}
@@ -214,7 +214,7 @@ export default function SDGGrid({ sdgs = [] }: { sdgs: any[] }) {
 									href={SdgController.create().url}
 								>
 									<Plus className="h-4 w-4 mr-1" />
-									Add Compliant Goal
+									Add Course
 								</Link>
 							</PermissionGuard>
 
@@ -293,7 +293,7 @@ export default function SDGGrid({ sdgs = [] }: { sdgs: any[] }) {
 				{sdgs.length === 0 && (
 					<div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border py-24 text-center">
 						<Target className="mb-4 h-12 w-12 text-primary opacity-40" />
-						<p className="text-lg font-semibold text-muted-foreground">No goals yet</p>
+						<p className="text-lg font-semibold text-muted-foreground">No activities yet</p>
 						<p className="mt-1 text-sm text-muted-foreground">Add your first SDG to get started.</p>
 					</div>
 				)}
